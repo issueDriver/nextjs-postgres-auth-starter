@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt-ts';
 import { getUser } from 'app/db';
 import { authConfig } from 'app/auth.config';
+import { validateAuthInput } from 'lib/validation/auth';
 
 export const {
   handlers: { GET, POST },
@@ -13,11 +14,17 @@ export const {
   ...authConfig,
   providers: [
     Credentials({
-      async authorize({ email, password }: any) {
-        let user = await getUser(email);
-        if (user.length === 0) return null;
-        let passwordsMatch = await compare(password, user[0].password!);
-        if (passwordsMatch) return user[0] as any;
+      credentials: {
+        email: { label: '邮箱', type: 'email' },
+        password: { label: '密码', type: 'password' },
+      },
+      async authorize(credentials) {
+        const input = validateAuthInput(credentials.email, credentials.password, 'login');
+        if (!input.ok) return null;
+        const [user] = await getUser(input.data.email);
+        if (!user || !user.password) return null;
+        if (!(await compare(input.data.password, user.password))) return null;
+        return { id: String(user.id), email: user.email };
       },
     }),
   ],

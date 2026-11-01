@@ -1,5 +1,7 @@
 # Next.js + PostgreSQL Auth Starter
 
+词间 H5 页面已接入 PostgreSQL 真实词库、NextAuth 邮箱密码认证和账号学习进度，不使用演示数据。运行、配置和测试说明见 [前端说明](docs/frontend.md)。
+
 This is a [Next.js](https://nextjs.org/) starter kit that uses [NextAuth.js](https://next-auth.js.org/) for simple email + password login, [Drizzle](https://orm.drizzle.team) as the ORM, and a [Neon Postgres](https://vercel.com/postgres) database to persist the data.
 
 ## Deploy Your Own

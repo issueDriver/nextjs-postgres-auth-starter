@@ -1,22 +1,22 @@
 import 'server-only';
 import { sql } from 'drizzle-orm';
-import { genSaltSync, hashSync } from 'bcrypt-ts';
+import { hash } from 'bcrypt-ts';
 import { db } from 'lib/db/client';
 import { users } from 'lib/db/schema';
-
-function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
-}
+import { normalizeEmail, validateAuthInput } from 'lib/validation/auth';
 
 export async function getUser(email: string) {
   return db.select().from(users).where(
     sql`lower(btrim(${users.email})) = ${normalizeEmail(email)}`,
-  );
+  ).limit(1);
 }
 
 export async function createUser(email: string, password: string) {
-  let salt = genSaltSync(10);
-  let hash = hashSync(password, salt);
+  const input = validateAuthInput(email, password, 'register');
+  if (!input.ok) throw new Error('INVALID_AUTH_INPUT');
+  const passwordHash = await hash(input.data.password, 10);
 
-  return db.insert(users).values({ email: normalizeEmail(email), password: hash });
+  return db.insert(users)
+    .values({ email: input.data.email, password: passwordHash })
+    .returning({ id: users.id, email: users.email });
 }

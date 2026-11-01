@@ -1,10 +1,11 @@
 import './globals.css';
 
 import { GeistSans } from 'geist/font/sans';
+import { SessionProvider } from 'components/auth/session-provider';
+import { HistoryDepthTracker } from 'components/navigation/history-depth';
 
-let title = 'Next.js + Postgres Auth Starter';
-let description =
-  'This is a Next.js starter kit that uses NextAuth.js for simple email + password login and a Postgres database to persist the data.';
+const title = '词间 · WORDSPACE';
+const description = '在字里行间，看见更大的世界。';
 
 export const metadata = {
   title,
@@ -14,8 +15,9 @@ export const metadata = {
     title,
     description,
   },
-  metadataBase: new URL('https://nextjs-postgres-auth.vercel.app'),
 };
+
+export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#ffffff' };
 
 export default function RootLayout({
   children,
@@ -23,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={GeistSans.variable}>{children}</body>
+    <html lang="zh-CN">
+      <body className={GeistSans.variable}><SessionProvider><HistoryDepthTracker /><div className="app-shell">{children}</div></SessionProvider></body>
     </html>
   );
 }
