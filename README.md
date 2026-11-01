@@ -10,10 +10,12 @@ You can clone & deploy it to Vercel with one click:
 
 ## Developing Locally
 
-You can clone & create this repo with the following command
+Clone the repository, enter the project directory, and install the dependencies:
 
 ```bash
-npx create-next-app nextjs-typescript-starter --example "https://github.com/vercel/nextjs-postgres-auth-starter"
+git clone https://github.com/issueDriver/nextjs-postgres-auth-starter.git
+cd nextjs-postgres-auth-starter
+pnpm install
 ```
 
 ## Getting Started
