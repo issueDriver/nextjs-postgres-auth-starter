@@ -4,9 +4,16 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:check": "node scripts/database.mjs check",
+    "db:status": "node scripts/database.mjs status",
+    "db:backup": "node scripts/database.mjs backup",
+    "db:migrate": "node scripts/database.mjs migrate",
+    "test:db": "node --test --test-concurrency=1 tests/database-config.test.mjs tests/database-migrations.test.mjs tests/migration-runner.test.mjs tests/optional-study-tracking.test.mjs"
   },
   "dependencies": {
+    "@next/env": "14.0.4",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
@@ -17,9 +24,11 @@
     "next-auth": "5.0.0-beta.4",
     "postgres": "^3.4.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "server-only": "0.0.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.14",
     "autoprefixer": "^10.4.16",
     "eslint": "8.56.0",
     "eslint-config-next": "^14.0.4",

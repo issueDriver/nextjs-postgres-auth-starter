@@ -20,13 +20,32 @@ pnpm install
 
 ## Getting Started
 
-First, run the development server:
+Configure `POSTGRES_URL` and `AUTH_SECRET` in your local `.env` file. Keep real
+credentials out of Git. If database migrations need a separate direct connection
+or elevated database role, also set `MIGRATION_DATABASE_URL`; otherwise migrations
+use `POSTGRES_URL`.
+
+Inspect the database, apply the versioned migrations, and start the development server:
 
 ```bash
+pnpm db:check
+pnpm db:backup
+pnpm db:migrate
+pnpm db:status
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Migrations preserve existing users and vocabulary data, add the study schema, and
+initialize stable word order. Run them once during a maintenance window before
+deploying this application version; subsequent runs skip applied migrations.
+See [Database Migrations](docs/database.md) for preflight checks, testing, and recovery.
+
+```bash
+pnpm test:db
+pnpm typecheck
+```
 
 ## Learn More
 
